@@ -1,0 +1,29 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+*.deb
+*.tar.gz
+*.whl
+
+# Node.js
+node_modules/
+npm-debug.log*
+
+# Environment and secrets
+.env
+.env.*
+config.json
+credentials.json
+*.session
+
+# IDE and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
