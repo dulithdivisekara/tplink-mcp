@@ -1,0 +1,32 @@
+{
+  "name": "tplink-mcp",
+  "version": "1.0.0",
+  "description": "Universal TP-Link Router Model Context Protocol (MCP 2.x) Server for AI Copilots",
+  "main": "bin/tplink-mcp.js",
+  "bin": {
+    "tplink-mcp": "bin/tplink-mcp.js"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "tplink",
+    "router-mcp",
+    "claude-desktop",
+    "antigravity",
+    "cursor",
+    "archer-mr200"
+  ],
+  "author": "Dulith Divisekara <dulithdivisekara@gmail.com> (https://github.com/dulithdivisekara)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dulithdivisekara/tplink-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dulithdivisekara/tplink-mcp/issues"
+  },
+  "homepage": "https://github.com/dulithdivisekara/tplink-mcp#readme",
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
