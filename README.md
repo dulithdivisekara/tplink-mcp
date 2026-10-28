@@ -2,7 +2,7 @@
 
 <div align="center">
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/TPLINK_Logo_2.svg" alt="TP-Link Official Logo" width="180" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/TP-Link_logo_2016.svg" alt="TP-Link Official Logo" width="180" />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <img src="https://mintcdn.com/mcp/2BMHnlNW5OqOohXZ/logo/dark.svg" alt="Model Context Protocol Logo" width="170" />
 <br><br>
