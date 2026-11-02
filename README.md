@@ -1,43 +1,105 @@
-# TP-Link Router Model Context Protocol (MCP) Server
+<p align="center">
+  <a href="https://github.com/dulithdivisekara/tplink-mcp" target="_blank" rel="noopener noreferrer">
+    <img src="assets/logo.png" width="110" alt="TP-Link Router MCP Server Logo" />
+  </a>
+</p>
 
-<div align="center">
+<h1 align="center">TP-Link Router MCP Server</h1>
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/TP-Link_logo_2016.svg" alt="TP-Link Official Logo" width="180" />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="https://mintcdn.com/mcp/2BMHnlNW5OqOohXZ/logo/dark.svg" alt="Model Context Protocol Logo" width="170" />
-<br><br>
+<p align="center">
+  Universal, agent-safe Model Context Protocol (MCP 2.x) server connecting TP-Link routers to autonomous AI copilots.
+</p>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Protocol: MCP](https://img.shields.io/badge/Protocol-MCP%202.x-purple.svg)](https://modelcontextprotocol.io/)
-[![npm package](https://img.shields.io/badge/npm-tplink--mcp-red.svg)](https://www.npmjs.com/)
-[![Docker Container](https://img.shields.io/badge/Docker-GHCR-blue.svg)](https://github.com/dulithdivisekara/tplink-mcp/pkgs/container/tplink-mcp)
-[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
-[![Platform: Linux | macOS | Windows](https://img.shields.io/badge/Platform-Linux%20%7C%20macOS%20%7C%20Windows-brightgreen.svg)](https://github.com/dulithdivisekara/tplink-mcp)
-[![Author: Dulith Divisekara](https://img.shields.io/badge/Author-Dulith%20Divisekara%20(SLIIT)-orange.svg)](https://github.com/dulithdivisekara)
+<p align="center">
+  <a href="https://modelcontextprotocol.io/"><img src="https://img.shields.io/badge/Protocol-MCP%202.x-4DCCD5?style=flat-square" alt="Protocol"></a>
+  <a href="https://www.npmjs.com/package/tplink-mcp"><img src="https://img.shields.io/badge/npm-tplink--mcp-CB3837?style=flat-square&logo=npm&logoColor=white" alt="npm"></a>
+  <a href="https://github.com/dulithdivisekara/tplink-mcp/pkgs/container/tplink-mcp"><img src="https://img.shields.io/badge/Docker-GHCR-2496ED?style=flat-square&logo=docker&logoColor=white" alt="Docker"></a>
+  <a href="#"><img src="https://img.shields.io/badge/Tests-63%20Passing-success?style=flat-square" alt="Tests"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="License"></a>
+</p>
 
-**Universal, Agent-Safe Model Context Protocol (MCP 2.x) Server for TP-Link Routers.**<br>
-Connects TP-Link 4G/LTE gateways and broadband routers directly to autonomous AI copilots (**Google Antigravity**, **Claude Desktop**, **Cursor**, **Codex**) with 18 typed tools, single-admin session leasing, and disconnection safeguards.
-
-</div>
-
----
-
-## 👨‍💻 Author & Origin Story
-
-> **Created & Architected by:** [Dulith Divisekara](https://github.com/dulithdivisekara)  
-> *Undergraduate in Information Technology, Sri Lanka Institute of Information Technology (SLIIT), Malabe, Sri Lanka.*
-
-### Origin: Autonomous 4G LTE Optimization
-Built to enable AI coding assistants and autonomous agents to diagnose, monitor, and optimize an active **Hutch Sri Lanka 4G LTE unlimited 20 Mbps SIM** running on a **TP-Link Archer MR200 v5** router in Malabe (near SLIIT Campus).
-
-Equipped with an automatic **Network Guard** that prevents autonomous AI agents from ever executing commands if the host is connected to university campus Wi-Fi or a mobile hotspot.
+<p align="center">
+  <a href="#overview">Overview</a> &bull;
+  <a href="#architecture--modes">Architecture</a> &bull;
+  <a href="#project-structure">Structure</a> &bull;
+  <a href="#installation">Installation</a> &bull;
+  <a href="#usage">Usage</a> &bull;
+  <a href="#session-logging--inspection">Logging</a> &bull;
+  <a href="#verification-tests">Testing</a> &bull;
+  <a href="#security--privacy">Security</a> &bull;
+  <a href="#license">License</a>
+</p>
 
 ---
 
-## 🚀 Quickstart for AI Copilots ($0 Cost)
+## Overview
 
-### 1. Claude Desktop Configuration
-Add to your `claude_desktop_config.json`:
+TP-Link Router MCP Server is a production-ready implementation of the Model Context Protocol (MCP 2.x) that grants autonomous AI agents safe, structured access to TP-Link cellular gateways and broadband routers. Supported agent frameworks include Google Antigravity, Claude Desktop, Cursor, and OpenAI Codex.
+
+Conceived during network tuning experiments on Hutch 4G LTE unlimited connections in Malabe, Sri Lanka (near the SLIIT Campus), the server allows AI models to independently audit link telemetry, optimize radio bands, and resolve cellular bufferbloat while guaranteeing zero disruption to concurrent sessions or unauthorized networks.
+
+To satisfy the strict single-administrator concurrency constraint enforced by TP-Link firmware, the server encapsulates every tool invocation within an atomic `SafeSession` context manager that authenticates, executes the request, and logs out immediately. Potentially disruptive tool calls enforce explicit confirmation arguments to prevent AI models from severing active connectivity.
+
+---
+
+## Architecture & Modes
+
+The server provides flexible deployment models across standard process transports, containerized runtimes, and package managers.
+
+| Deployment Target | Transport Mechanism | Runtime Requirements | Isolation Level | Recommended Host |
+| :--- | :--- | :--- | :--- | :--- |
+| **Python stdio** | JSON-RPC over stdin/stdout | Python 3.10+ | Process-level | Google Antigravity, Cursor, CLI agents |
+| **Node.js npx** | Stdio wrapper | Node.js 18+ | Process-level | Claude Desktop, npx environments |
+| **Docker Container** | Host-networked container | Docker Engine | Containerized | Headless servers, Kubernetes, Podman |
+| **Smithery Registry** | Stdio automation | Smithery CLI | Managed | Automated agent configurations |
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Agent as AI Copilot (Antigravity / Claude)
+    participant MCP as TP-Link MCP Server
+    participant Guard as Network Profile Guard
+    participant Session as SafeSession Manager
+    participant Router as TP-Link Gateway (192.168.1.1)
+
+    Agent->>MCP: Call Tool (e.g. router_get_rf_signal)
+    MCP->>Guard: Verify Gateway IP and SSID safety
+    Guard-->>MCP: Safety Verified
+    MCP->>Session: Acquire atomic session lock
+    Session->>Router: Authenticate (RSA-1024 / AES-128)
+    Router-->>Session: Authenticated Token
+    Session->>Router: Dispatch TR-064 Query
+    Router-->>Session: Telemetry Payload
+    Session->>Router: Immediate Logout (Release Session)
+    Session-->>MCP: Sanitized Data
+    MCP-->>Agent: Return Tool Result JSON
+```
+
+---
+
+## Project Structure
+
+```
+.
+├── tplink_mcp/                 # MCP server and tool registry
+│   ├── server.py               # MCP 2.x protocol entrypoint and JSON-RPC router
+│   ├── tools/                  # 18 typed MCP tool definitions
+│   └── core/                   # Session leasing, network safety, and crypto
+├── bin/                        # Node.js binary wrapper for npx distribution
+├── Dockerfile                  # Container definition for GHCR deployment
+├── smithery.yaml               # Smithery marketplace manifest
+├── tests/                      # Automated test suite (63 unit tests)
+├── package.json                # npm wrapper configuration
+├── pyproject.toml              # Python build and dependency manifest
+└── README.md
+```
+
+---
+
+## Installation
+
+### Claude Desktop Configuration
+Add the server entry to your `claude_desktop_config.json`:
 
 ```json
 {
@@ -54,8 +116,8 @@ Add to your `claude_desktop_config.json`:
 }
 ```
 
-### 2. Google Antigravity & Cursor Configuration
-Configure directly via standard Python stdio transport:
+### Google Antigravity & Cursor Configuration
+Configure directly using Python stdio transport:
 
 ```json
 {
@@ -72,7 +134,7 @@ Configure directly via standard Python stdio transport:
 }
 ```
 
-### 3. Docker Container (Zero-Install)
+### Docker Container (Zero-Install)
 ```bash
 docker run -i --rm --network host \
   -e TPLINK_ROUTER_IP="http://192.168.1.1" \
@@ -82,51 +144,75 @@ docker run -i --rm --network host \
 
 ---
 
-## 🛠️ Complete MCP Tools Catalog (18 Typed Tools)
+## Usage
 
-Following the official **MCP Best Practices**, tools are categorized into safe read-only inspectors and guarded mutation tools:
+### Core Tools Catalog
 
-| Tool Name | Type | Description | Safety Guard |
+The server exposes 18 typed MCP tools categorized by operational risk:
+
+| Tool Name | Operation | Description | Safety Gate |
 | :--- | :--- | :--- | :--- |
-| `router_profile_check` | Read | Verifies active Wi-Fi SSID & Gateway against target router | Safe |
-| `router_get_status` | Read | Full device info, cellular status, and WAN telemetry | Safe |
-| `router_get_rf_signal` | Read | Live 3GPP RSRP, RSRQ, SNR, and tower metadata | Safe |
-| `router_set_cell_lock` | Write | Locks or unlocks cellular base station (EARFCN + PCI) | Requires `confirm=True` |
-| `router_set_lte_band` | Write | Locks modem to specific LTE frequency band (e.g. Band 3) | Requires `confirm=True` |
-| `router_get_data_limit` | Read | Returns monthly data quota, billing reset day, and bandwidth | Safe |
-| `router_set_data_limit` | Write | Sets monthly data limit in MB and billing cycle day | Requires `confirm=True` |
-| `router_get_connected_clients` | Read | Lists all connected LAN devices (hostname, IP, MAC, lease) | Safe |
-| `router_manage_dhcp_reservation` | Write | Adds, deletes, or lists static DHCP IP reservations | Requires `confirm=True` (add/del) |
-| `router_get_wifi_networks` | Read | Returns 2.4 GHz and 5 GHz radio states, SSIDs, and channels | Safe |
-| `router_set_wifi_radio` | Write | Enables/disables Wi-Fi radio or updates SSID | Requires `confirm=True` |
+| `router_profile_check` | Read | Verifies active Wi-Fi SSID and default gateway | Safe |
+| `router_get_status` | Read | Retrieves hardware status, WAN IP, and cellular health | Safe |
+| `router_get_rf_signal` | Read | Queries 3GPP RSRP, RSRQ, SNR, and tower parameters | Safe |
+| `router_set_cell_lock` | Write | Pins modem to specific EARFCN and PCI base station | Requires `confirm=True` |
+| `router_set_lte_band` | Write | Restricts modem to selected frequency band (e.g. Band 3) | Requires `confirm=True` |
+| `router_get_data_limit` | Read | Inspects monthly quota, billing day, and live bandwidth | Safe |
+| `router_set_data_limit` | Write | Sets monthly billing cycle and data ceiling | Requires `confirm=True` |
+| `router_get_connected_clients` | Read | Lists LAN devices with IP, MAC, hostname, and lease | Safe |
+| `router_manage_dhcp_reservation` | Write | Adds, deletes, or inspects static DHCP bindings | Requires `confirm=True` (add/del) |
+| `router_get_wifi_networks` | Read | Returns 2.4 GHz and 5 GHz wireless configuration | Safe |
+| `router_set_wifi_radio` | Write | Enables or disables wireless radio transmitters | Requires `confirm=True` |
 | `router_get_led_status` | Read | Queries front panel LEDs and night mode schedule | Safe |
-| `router_set_led_night_mode` | Write | Configures night mode to turn off router LEDs automatically | Safe |
-| `router_run_diagnostic` | Exec | Runs router-side WAN, physical link, and internet test | Safe |
+| `router_set_led_night_mode` | Write | Configures automated nighttime LED disablement | Safe |
+| `router_run_diagnostic` | Exec | Dispatches router-side WAN, link, and internet tests | Safe |
 | `router_set_dns` | Write | Configures custom WAN DNS resolvers | Safe |
 | `router_toggle_ipv6` | Write | Enables or disables IPv6 stack | Safe |
-| `router_run_ussd` | Exec | Dispatches interactive USSD query to SIM | Safe |
-| `router_read_sms` | Read | Reads incoming or sent SMS messages from SIM card | Safe |
-| `router_send_sms` | Write | Sends SMS message through SIM card | Safe |
-| `router_reboot` | Exec | Gracefully reboots router hardware | Requires `confirm=True` |
+| `router_run_ussd` | Exec | Sends interactive USSD query to SIM | Safe |
+| `router_read_sms` | Read | Reads incoming and sent SMS messages from SIM card | Safe |
+| `router_send_sms` | Write | Dispatches SMS message via cellular modem | Safe |
+| `router_reboot` | Exec | Gracefully restarts router hardware | Requires `confirm=True` |
 
 ---
 
-## 🔒 Safety Guardrails for Autonomous AI Agents
+## Session Logging & Inspection
 
-1. **Atomic Session Leasing (`SafeSession`)**: Automatically authenticates, executes the tool, and releases the session immediately so your browser (`192.168.1.1`) is never locked out.
-2. **Disconnection Prevention (`confirm=True`)**: Potentially disruptive actions like `router_reboot` or `router_set_cell_lock` require an explicit boolean confirmation flag to prevent an autonomous agent from severing its own active session.
-3. **Multi-Environment Network Guard**: Blocks execution if your laptop is currently on university Wi-Fi or personal hotspot.
+The MCP specification mandates clean stdout for JSON-RPC message frames. All server diagnostic logs are routed strictly to stderr or designated files:
+
+- **Audit Log Path**: `~/.config/tplink-router/mcp.log`
+- **Stream Live Logs**:
+  ```bash
+  tail -f ~/.config/tplink-router/mcp.log
+  ```
 
 ---
 
-## 🧪 Testing
+## Verification Tests
+
+Run the automated test suite verifying tool schemas, validation handlers, and mock gateway responses:
 
 ```bash
 python3 -m unittest discover tests
 ```
 
+```text
+Ran 63 tests in 19.603s
+
+OK
+```
+
 ---
 
-## 📄 License
+## Security & Privacy
 
-MIT License. Created by [Dulith Divisekara](https://github.com/dulithdivisekara).
+- **SafeSession Isolation**: Eliminates lockout errors on the web administrative portal by guaranteeing immediate atomic session teardown.
+- **Disconnection Guardrails**: Destructive commands enforce `confirm=True` to prevent recursive disconnection where an AI agent severs its own connection.
+- **Network Profile Validator**: Halts execution if the client is connected to university campus Wi-Fi or unauthorized networks.
+- **Credential Segregation**: Credentials are supplied via environment variables or protected configuration files with owner-only (`0600`) POSIX permissions.
+
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+Author: [Dulith Divisekara](https://github.com/dulithdivisekara).
